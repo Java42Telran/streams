@@ -37,13 +37,13 @@ class StreamIntroductionTests {
 		Integer [] expected = {-8, 10};
 		assertArrayEquals(expected, actual);
 	}
-	@Test
-	void streamStringSourceTest() {
-		String str = "Hello";
-		str.chars().forEach(n -> System.out.printf("%c;", n));
-		
-		
-	}
+//	@Test
+//	void streamStringSourceTest() {
+//		String str = "Hello";
+//		str.chars().forEach(n -> System.out.printf("%c;", n));
+//		
+//		
+//	}
 	@Test
 	void conversionFromIntToInteger( ) {
 		List<Integer> expected = Arrays.asList(1, 2, 3);
@@ -192,6 +192,7 @@ class StreamIntroductionTests {
 		//TODO printing out array in the shuffling order
 		//with out any additional collections
 		//one pipeline 
+		new Random().ints(0, ar.length).distinct().limit(ar.length).forEach(i -> System.out.print(ar[i] + ";"));
 	}
 	@Test
 	void shufflingTest() {
@@ -204,6 +205,13 @@ class StreamIntroductionTests {
 		// 1: <occurrences value>
 		// 2: ...
 		// 4: 
+		int nNumbers = 1_000_000;
+		new Random().ints(nNumbers, 1, Integer.MAX_VALUE)
+		.flatMap(n -> Integer.toString(n).chars()).boxed()
+		.collect(Collectors.groupingBy(d -> d, Collectors.counting()))
+		.entrySet().stream().sorted((e1, e2) -> Long.compare(e2.getValue(), e1.getValue()))
+		.forEach(e -> System.out.printf("%c: %d\n", e.getKey(), e.getValue()));
+		
 	}
 	@Test
 	void digitStatisticsTest() {
